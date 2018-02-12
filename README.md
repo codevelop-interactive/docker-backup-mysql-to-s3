@@ -1,12 +1,6 @@
-# mysql-backup-s3
+# mysql-s3
 
-Backup MySQL to S3 (supports periodic backups & mutli files)
-
-## Basic usage
-
-```sh
-$ docker run -e S3_ACCESS_KEY_ID=key -e S3_SECRET_ACCESS_KEY=secret -e S3_BUCKET=my-bucket -e S3_PREFIX=backup -e MYSQL_USER=user -e MYSQL_PASSWORD=password -e MYSQL_HOST=localhost schickling/mysql-backup-s3
-```
+Backup and Restore MySQL databases to S3 (supports periodic backups)
 
 ## Environment variables
 
@@ -23,7 +17,6 @@ $ docker run -e S3_ACCESS_KEY_ID=key -e S3_SECRET_ACCESS_KEY=secret -e S3_BUCKET
 - `S3_REGION` the AWS S3 bucket region (default: us-west-1)
 - `S3_ENDPOINT` the AWS Endpoint URL, for S3 Compliant APIs such as [minio](https://minio.io) (default: none)
 - `S3_S3V4` set to `yes` to enable AWS Signature Version 4, required for [minio](https://minio.io) servers (default: no)
-- `MULTI_FILES` Allow to have one file per database if set `yes` default: no)
 - `SCHEDULE` backup schedule time, see explainatons below
 
 ## Secrets
@@ -34,8 +27,15 @@ You can alternatively mount docker secrets and configure their location using th
 - `S3_SECRET_ACCESS_KEY_FILE` your path to the AWS secret key file
 - `MYSQL_PASSWORD_FILE` your path to the mysql password secret file
 
-### Automatic Periodic Backups
+## Commands
+
+- `backup` runs a one-off backup to the S3 bucket
+- `cron backup` runs scheduled backups to the S3 bucket as defined by the `SCHEDULE` environment variable
+- `restore` runs a one-off restore from the latest backup in the S3 bucket
+- `restore backupfile.dump.sql.gz` runs a one-off restore from the specified backup in the S3 bucket
+- `restore cron ` runs scheduled restores from the latest backup in the S3 bucket
+- `restore cron backupfile.dump.sql.gz` runs scheduled restores from the specified backup in the S3 bucket
 
 You can additionally set the `SCHEDULE` environment variable like `-e SCHEDULE="@daily"` to run the backup automatically.
 
-More information about the scheduling can be found [here](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules).
+Learn more about valid values for the `SCHEDULE` environment variable [here](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules).

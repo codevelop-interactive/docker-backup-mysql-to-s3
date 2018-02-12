@@ -11,8 +11,14 @@ fi
 
 
 if [ -z "$1" ]; then
-# Find last backup file
-: ${LAST_BACKUP:=$(aws s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | awk -F " " '{print $4}' | sort -r | head -n1)}
+
+  # Find last backup file
+  : ${LAST_BACKUP:=$(aws s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | awk -F " " '{print $4}' | sort -r | head -n1)}
+
+else
+
+  LAST_BACKUP=$1
+
 fi
 
 if [ -z "$LAST_BACKUP" ]; then

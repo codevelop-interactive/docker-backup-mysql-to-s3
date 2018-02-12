@@ -11,8 +11,8 @@ secrets:
 volumes:
   database:
 services:
-  docker-backup-mysql-to-s3:
-    image: 'threevl/docker-backup-mysql-to-s3'
+  app:
+    image: 'threevl/mysql-s3-backup-restore'
     build:
       context: '.'
       dockerfile: 'Dockerfile'

@@ -63,7 +63,26 @@ if [ "${S3_IAMROLE}" != "true" ]; then
   export AWS_DEFAULT_REGION=$S3_REGION
 fi
 
-if [ $1 = "backup" ]; then
+if [ $1 = "cron" ]; then
+
+  if [ -z "$SCHEDULE" ]; then
+
+    echo "You need to set the SCHEDULE environment variable"
+    exit 1
+
+  fi
+
+  if [ $2 = "backup" ]; then
+
+    exec go-cron "$SCHEDULE" /bin/bash backup.sh
+
+  elif [ $2 = "restore" ]; then
+
+    exec go-cron "$SCHEDULE" /bin/bash restore.sh $3
+
+  fi
+
+elif [ $1 = "backup" ]; then
 
   ./backup.sh
 
