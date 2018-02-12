@@ -1,0 +1,41 @@
+version: '3.4'
+secrets:
+  awsKey:
+    file: ./secrets/awsKey
+  awsSecret:
+    file: ./secrets/awsSecret
+  mysqlDbPass:
+    file: ./secrets/mysqlDbPass
+volumes:
+  database:
+services:
+  docker-backup-mysql-to-s3:
+    image: 'threevl/docker-backup-mysql-to-s3'
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile'
+    secrets:
+      - awsKey
+      - awsSecret
+      - mysqlDbPass
+    environment:
+      MYSQL_HOST: "database"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysqlDbPass'
+      S3_ACCESS_KEY_ID_FILE: '/run/secrets/awsKey'
+      S3_SECRET_ACCESS_KEY_FILE: '/run/secrets/awsSecret'
+      S3_BUCKET: "canvet-backups"
+      S3_PREFIX: 'database-backup'
+      SCHEDULE: "0 * * * * *"
+  database:
+    image: mariadb:10.2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'somerootpassword'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysqlDbPass'
+      MYSQL_DATABASE: 'mydatabase'
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - "3308:3306"
