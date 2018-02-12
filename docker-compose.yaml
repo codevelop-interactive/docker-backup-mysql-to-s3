@@ -4,8 +4,10 @@ secrets:
     file: ./secrets/awsKey
   awsSecret:
     file: ./secrets/awsSecret
-  mysqlDbPass:
-    file: ./secrets/mysqlDbPass
+  mysqlPass:
+    file: ./secrets/mysqlPass
+  mysqlRootPass:
+    file: ./secrets/mysqlRootPass
 volumes:
   database:
 services:
@@ -17,25 +19,35 @@ services:
     secrets:
       - awsKey
       - awsSecret
-      - mysqlDbPass
+      - mysqlPass
+      - mysqlRootPass
+    volumes:
+      - ./run.sh:/run.sh
+      - ./restore.sh:/restore.sh
+      - ./backup.sh:/backup.sh
     environment:
       MYSQL_HOST: "database"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD_FILE: '/run/secrets/mysqlDbPass'
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysqlRootPass'
       S3_ACCESS_KEY_ID_FILE: '/run/secrets/awsKey'
       S3_SECRET_ACCESS_KEY_FILE: '/run/secrets/awsSecret'
       S3_BUCKET: "canvet-backups"
       S3_PREFIX: 'database-backup'
       SCHEDULE: "0 * * * * *"
+    depends_on:
+      - database
   database:
     image: mariadb:10.2
     restart: always
+    secrets:
+      - mysqlPass
+      - mysqlRootPass
     environment:
-      MYSQL_ROOT_PASSWORD: 'somerootpassword'
+      MYSQL_ROOT_PASSWORD_FILE: '/run/secrets/mysqlRootPass'
       MYSQL_USER: 'user'
-      MYSQL_PASSWORD_FILE: '/run/secrets/mysqlDbPass'
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysqlPass'
       MYSQL_DATABASE: 'mydatabase'
     volumes:
       - database:/var/lib/mysql
     ports:
-      - "3308:3306"
+      - "3306:3306"
