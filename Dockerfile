@@ -17,7 +17,10 @@ ENV S3_S3V4=no
 ENV S3_PREFIX='backup'
 ENV SCHEDULE=
 
-ADD run.sh run.sh
-ADD backup.sh backup.sh
+ADD run.sh /run.sh
+ADD backup.sh /backup.sh
+ADD restore.sh /restore.sh
+WORKDIR /
+ENTRYPOINT ["/run.sh"]
 
-CMD ["/bin/bash", "run.sh", "backup"]
+CMD ["backup"]

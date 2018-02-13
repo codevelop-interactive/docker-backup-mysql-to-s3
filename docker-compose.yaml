@@ -21,10 +21,10 @@ services:
       - awsSecret
       - mysqlPass
       - mysqlRootPass
-    volumes:
-      - ./run.sh:/run.sh
-      - ./restore.sh:/restore.sh
-      - ./backup.sh:/backup.sh
+    # volumes:
+      # - ./run.sh:/run.sh
+      # - ./restore.sh:/restore.sh
+      # - ./backup.sh:/backup.sh
     environment:
       MYSQL_HOST: "database"
       MYSQL_USER: "root"
