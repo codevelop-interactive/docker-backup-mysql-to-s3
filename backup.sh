@@ -36,7 +36,7 @@ if [ $? == 0 ]; then
 
   _backup_tag=""
   if [ $(date +"%-m") == 1 ] && [ $(date +"%-d") == 1 ]; then
-    # first month, first day of the month
+    # first day of the year
     _backup_tag="yearly"
   elif [ $(date +"%-d") == 1 ]; then
     # first day of the month

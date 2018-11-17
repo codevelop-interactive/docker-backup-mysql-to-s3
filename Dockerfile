@@ -1,5 +1,5 @@
 FROM alpine:latest
-LABEL maintainer="Dan Imbrogno <dan@3vl.ca>"
+LABEL maintainer="Steven McCoy <steven@codevelop.ca>"
 ADD install.sh install.sh
 RUN sh install.sh && rm install.sh
 ENV MYSQLDUMP_OPTIONS --quote-names --quick --add-drop-table --add-locks --allow-keywords --disable-keys --extended-insert --single-transaction --create-options --comments --net_buffer_length=16384
