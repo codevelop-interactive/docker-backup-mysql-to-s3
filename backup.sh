@@ -34,21 +34,23 @@ if [ $? == 0 ]; then
 
   copy_s3 $DUMP_FILE $S3_FILE
 
-  _backup_tag=""
-  if [ $(date +"%-m") == 1 ] && [ $(date +"%-d") == 1 ]; then
-    # first day of the year
-    _backup_tag="yearly"
-  elif [ $(date +"%-d") == 1 ]; then
-    # first day of the month
-    _backup_tag="monthly"
-  elif [ $(date +"%u") == 6 ]; then
-    # saturday
-    _backup_tag="weekly"
-  else
-    # any other day
-    _backup_tag="daily"
-  fi
-  aws s3api put-object-tagging --bucket $S3_BUCKET --key $S3_PREFIX/$S3_FILE --tagging 'TagSet=[{Key=relevance,Value=${_backup_tag}}]'
+  # _backup_tag=""
+  # if [ $(date +"%-m") == 1 ] && [ $(date +"%-d") == 1 ]; then
+  #   # first day of the year
+  #   _backup_tag="yearly"
+  # elif [ $(date +"%-d") == 1 ]; then
+  #   # first day of the month
+  #   _backup_tag="monthly"
+  # elif [ $(date +"%u") == 6 ]; then
+  #   # saturday
+  #   _backup_tag="weekly"
+  # else
+  #   # any other day
+  #   _backup_tag="daily"
+  # fi
+  echo "BACKUP TAG FOR ${MYSQL_HOST}..."
+
+  #aws s3api put-object-tagging --bucket $S3_BUCKET --key $S3_PREFIX/$S3_FILE --tagging 'TagSet=[{Key=relevance,Value=${_backup_tag}}]'
 
 else
   >&2 echo "Error creating dump of all databases"
