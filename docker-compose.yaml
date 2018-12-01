@@ -33,7 +33,7 @@ services:
       S3_SECRET_ACCESS_KEY_FILE: '/run/secrets/awsSecret'
       S3_BUCKET: "canvet-aws-backups"
       S3_PREFIX: 'database-backup'
-      CRON_SCHEDULE: '* 0 * * *'
+      CRON_SCHEDULE: '* 1 * * *'
     depends_on:
       - database
   database:

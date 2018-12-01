@@ -3,21 +3,21 @@
 set -e
 
 file_env() {
-        local var="$1"
-        local fileVar="${var}_FILE"
-        local def="${2:-}"
-        if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
-                echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
-                exit 1
-        fi
-        local val="$def"
-        if [ "${!var:-}" ]; then
-                val="${!var}"
-        elif [ "${!fileVar:-}" ]; then
-                val="$(< "${!fileVar}")"
-        fi
-        export "$var"="$val"
-        unset "$fileVar"
+  local var="$1"
+  local fileVar="${var}_FILE"
+  local def="${2:-}"
+  if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+          echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
+          exit 1
+  fi
+  local val="$def"
+  if [ "${!var:-}" ]; then
+          val="${!var}"
+  elif [ "${!fileVar:-}" ]; then
+          val="$(< "${!fileVar}")"
+  fi
+  export "$var"="$val"
+  unset "$fileVar"
 }
 
 file_env 'MYSQL_PASSWORD' ''
@@ -25,30 +25,30 @@ file_env 'S3_ACCESS_KEY_ID' ''
 file_env 'S3_SECRET_ACCESS_KEY' ''
 
 
-if [ "${S3_ACCESS_KEY_ID}" == "**None**" ]; then
+if [ "${S3_ACCESS_KEY_ID}" == "" ]; then
   echo "Warning: You did not set the S3_ACCESS_KEY_ID environment variable."
 fi
 
-if [ "${S3_SECRET_ACCESS_KEY}" == "**None**" ]; then
+if [ "${S3_SECRET_ACCESS_KEY}" == "" ]; then
   echo "Warning: You did not set the S3_SECRET_ACCESS_KEY environment variable."
 fi
 
-if [ "${S3_BUCKET}" == "**None**" ]; then
+if [ "${S3_BUCKET}" == "" ]; then
   echo "You need to set the S3_BUCKET environment variable."
   exit 1
 fi
 
-if [ "${MYSQL_HOST}" == "**None**" ]; then
+if [ "${MYSQL_HOST}" == "" ]; then
   echo "You need to set the MYSQL_HOST environment variable."
   exit 1
 fi
 
-if [ "${MYSQL_USER}" == "**None**" ]; then
+if [ "${MYSQL_USER}" == "" ]; then
   echo "You need to set the MYSQL_USER environment variable."
   exit 1
 fi
 
-if [ "${MYSQL_PASSWORD}" == "**None**" ]; then
+if [ "${MYSQL_PASSWORD}" == "" ]; then
   echo "You need to set the MYSQL_PASSWORD environment variable or link to a container named MYSQL."
   exit 1
 fi
@@ -67,7 +67,7 @@ copy_s3 () {
   SRC_FILE=$1
   DEST_FILE=$2
 
-  if [ "${S3_ENDPOINT}" == "**None**" ]; then
+  if [ "${S3_ENDPOINT}" == "" ]; then
     AWS_ARGS=""
   else
     AWS_ARGS="--endpoint-url ${S3_ENDPOINT}"
