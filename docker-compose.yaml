@@ -19,8 +19,8 @@ services:
     secrets:
       - awsKey
       - awsSecret
-      - mysqlPass
       - mysqlRootPass
+      - mysqlPass
     # volumes:
       # - ./run.sh:/run.sh
       # - ./restore.sh:/restore.sh
@@ -31,9 +31,9 @@ services:
       MYSQL_PASSWORD_FILE: '/run/secrets/mysqlRootPass'
       S3_ACCESS_KEY_ID_FILE: '/run/secrets/awsKey'
       S3_SECRET_ACCESS_KEY_FILE: '/run/secrets/awsSecret'
-      S3_BUCKET: "canvet-backups"
+      S3_BUCKET: "canvet-aws-backups"
       S3_PREFIX: 'database-backup'
-      SCHEDULE: "0 * * * * *"
+      CRON_SCHEDULE: '* 0 * * *'
     depends_on:
       - database
   database:

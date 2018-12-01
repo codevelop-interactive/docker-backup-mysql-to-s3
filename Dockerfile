@@ -15,7 +15,7 @@ ENV S3_REGION us-west-1
 ENV S3_ENDPOINT=
 ENV S3_S3V4=no
 ENV S3_PREFIX='backup'
-ENV SCHEDULE=
+ENV CRON_SCHEDULE=
 
 ADD run.sh /run.sh
 ADD backup.sh /backup.sh
