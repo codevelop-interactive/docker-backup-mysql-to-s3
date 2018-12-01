@@ -98,7 +98,7 @@ copy_s3 () {
      _backup_tag="daily"
   fi
 
-   aws s3api put-object-tagging --bucket $S3_BUCKET --key $S3_PREFIX/$S3_FILE --tagging 'TagSet=[{Key=relevance,Value='${_backup_tag}'}]'
+   aws s3api put-object-tagging --bucket $S3_BUCKET --key $S3_PREFIX/$DEST_FILE --tagging 'TagSet=[{Key=relevance,Value='${_backup_tag}'}]'
 }
 
 # Multi file: yes
