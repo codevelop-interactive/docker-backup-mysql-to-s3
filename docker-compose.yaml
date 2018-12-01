@@ -12,7 +12,7 @@ volumes:
   database:
 services:
   app:
-    image: 'codevelopinteractive/mysql-s3-backup-restore'
+    image: 'codevelopinteractive/docker-backup-mysql-to-s3'
     build:
       context: '.'
       dockerfile: 'Dockerfile'
