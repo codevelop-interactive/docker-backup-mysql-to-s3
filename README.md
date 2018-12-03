@@ -17,7 +17,7 @@ Backup and Restore MySQL databases to S3 (supports periodic backups)
 - `S3_REGION` the AWS S3 bucket region (default: us-west-1)
 - `S3_ENDPOINT` the AWS Endpoint URL, for S3 Compliant APIs such as [minio](https://minio.io) (default: none)
 - `S3_S3V4` set to `yes` to enable AWS Signature Version 4, required for [minio](https://minio.io) servers (default: no)
-- `SCHEDULE` backup schedule time, see explainatons below
+- `CRON_SCHEDULE` backup schedule time, see explainatons below
 
 ## Secrets
 
@@ -30,12 +30,12 @@ You can alternatively mount docker secrets and configure their location using th
 ## Commands
 
 - `backup` runs a one-off backup to the S3 bucket
-- `cron backup` runs scheduled backups to the S3 bucket as defined by the `SCHEDULE` environment variable
+- `cron backup` runs scheduled backups to the S3 bucket as defined by the `CRON_SCHEDULE` environment variable
 - `restore` runs a one-off restore from the latest backup in the S3 bucket
 - `restore backupfile.dump.sql.gz` runs a one-off restore from the specified backup in the S3 bucket
 - `restore cron ` runs scheduled restores from the latest backup in the S3 bucket
 - `restore cron backupfile.dump.sql.gz` runs scheduled restores from the specified backup in the S3 bucket
 
-You can additionally set the `SCHEDULE` environment variable like `-e SCHEDULE="@daily"` to run the backup automatically.
+You can additionally set the `CRON_SCHEDULE` environment variable like `-e CRON_SCHEDULE="@daily"` to run the backup automatically.
 
 Learn more about valid values for the `SCHEDULE` environment variable [here](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules).
